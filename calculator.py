@@ -37,8 +37,13 @@ class CalculatorHTTPRequestHandler(BaseHTTPRequestHandler):
     		# Decode
     		post_body = urllib.unquote(post_body)
     		body = self._get_form(post_body)
-    		data = body["text"]
-    		res = calc.calcul(data)
+    		if body["command"] == "/calcul":
+				data = body["text"]
+				res = calc.calcul(data)
+				print " {0} = {1}".format(data,res)
+    		else:
+				res = "Bad slash command '{0}'".format(body["command"])
+				code = 400
 	    except SyntaxError,e:
     	    	res = str(e)
     	    	code = 400 # Bad Request
